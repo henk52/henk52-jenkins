@@ -3,8 +3,11 @@
 $szHomeDirectory = "/var/lib/jenkins"
 $szMastersPublicKey = ""
 
-package {'ssh': ensure => present }
-package {'jenkins': ensure => present }
+$szSshPackageName = "ssh"
+# Could openssh be used for both ubuntu and fedora?
+
+package { "$szSshPackageName": ensure => present }
+package { 'jenkins': ensure => present }
 
 service { 'ssh': 
   ensure => running,
@@ -13,3 +16,14 @@ service { 'ssh':
 }
 
 #exec user=> jenkins generate ssh priv/pub
+
+exec { 'jenkins_rsa':
+  creates  => "$szHomeDirectory/.ssh/id_rsa",
+  command  => "/usr/bin/ssh-keygen -t rsa -b 2048  -q -f $szHomeDirectory/.ssh/id_rsa",
+  user     => 'jenkins',
+  group    => 'jenkins',
+  require  => [
+                Package [ "$szSshPackageName" ],
+                File [ "$szHomeDirectory/.ssh" ],
+              ],
+}
