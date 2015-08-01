@@ -17,7 +17,7 @@ service { 'ssh':
 }
 
 # Install Jenkins
-service { 'ssh': 
+service { 'jenkins': 
   ensure => running,
   enable => true,
   require => Package['jenkins'],
@@ -33,6 +33,5 @@ exec { 'jenkins_rsa':
   require  => [
                 Package [ "$szSshPackageName" ],
                 Service [ 'jenkins' ],
-                File [ "$szHomeDirectory/.ssh" ],
               ],
 }
