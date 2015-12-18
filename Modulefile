@@ -1,5 +1,5 @@
 name    'henk52-jenkins'
-version '0.1.0'
+version '0.2.0'
 source 'UNKNOWN'
 author 'henk52'
 license 'Apache License, Version 2.0'
