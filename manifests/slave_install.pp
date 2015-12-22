@@ -3,14 +3,19 @@
 $szHomeDirectory = "/var/lib/jenkins"
 $szMastersPublicKey = hiera("MastersPublicKey")
 
-package {'ssh': ensure => present }
+$szSshPackageName = "openssh"
+
+
+package {"$szSshPackageName": ensure => present }
+
+# Jenkins pushes a .jar file onto the node, even when the node is set-up as an ssh node.
 package {'openjdk-7-jre-headless': ensure => present }
 
 
-service { 'ssh': 
+service { 'sshd': 
   ensure => running,
   enable => true,
-  require => Package['ssh'],
+  require => Package["$szSshPackageName"],
 }
 
 # TODO get the UID from hiera.
@@ -36,3 +41,4 @@ file { "$szHomeDirectory/.ssh/authorized_keys":
                File["$szHomeDirectory/.ssh"],
              ],
 }
+
