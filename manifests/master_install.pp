@@ -135,3 +135,13 @@ exec { 'test-results-analyzer_plugin':
   notify  => Service['jenkins'],
 }
 
+# Enable auditing changes to jobs etc.
+exec { 'audit-trail_plugin':
+  creates => "$szJenkinsPluginDir/audit-trail.hpi",
+  command => "wget http://dm/storage/jenkins/audit-trail.hpi",
+  cwd     => "$szJenkinsPluginDir",
+  path    => '/usr/bin',
+  require => Exec['jenkins'],
+  notify  => Service['jenkins'],
+}
+
