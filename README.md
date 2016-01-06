@@ -1,6 +1,7 @@
 # henk52-jenkins
 Jenkins master and slave installation.
 
+RPM source: https://wiki.jenkins-ci.org/display/JENKINS/Installing+Jenkins+on+Red+Hat+distributions
 
 Create a master instance
 puppet apply master_install.pp
