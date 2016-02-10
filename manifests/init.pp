@@ -57,6 +57,11 @@ $szJenkinsPluginDir = "$szHomeDirectory/plugins"
 package { "$szSshPackageName": ensure => present }
 package { 'git': ensure => present }
 
+# According to http://vault-tec.info/post/98877792626/jenkins-service-unavailable
+#  the issue of jenkins doing the 503 is fixed when this package is installed:
+package { 'fontconfig': ensure => present }
+
+
 service { 'sshd': 
   ensure => running,
   enable => true,
@@ -81,7 +86,10 @@ exec { 'jenkins':
 service { 'jenkins': 
   ensure => running,
   enable => true,
-  require => Exec['jenkins'],
+  require => [
+               Exec['jenkins'],
+               Package['fontconfig']
+             ],
 #  require => Package['jenkins',"$szJavaPkgName"],
 }
 
@@ -111,7 +119,7 @@ exec { 'greenballs_plugin':
   command => "wget http://dm/storage/jenkins/greenballs.hpi",
   cwd     => "$szJenkinsPluginDir",
   path    => '/usr/bin',
-  require => Exec['jenkins'],
+  require => File["$szJenkinsPluginDir"],
   notify  => Service['jenkins'],
 }
 
@@ -122,7 +130,7 @@ exec { 'monitoring_plugin':
   command => "wget http://dm/storage/jenkins/monitoring.hpi",
   cwd     => "$szJenkinsPluginDir",
   path    => '/usr/bin',
-  require => Exec['jenkins'],
+  require => File["$szJenkinsPluginDir"],
   notify  => Service['jenkins'],
 }
 
@@ -131,7 +139,7 @@ exec { 'disk-usage_plugin':
   command => "wget http://dm/storage/jenkins/disk-usage.hpi",
   cwd     => "$szJenkinsPluginDir",
   path    => '/usr/bin',
-  require => Exec['jenkins'],
+  require => File["$szJenkinsPluginDir"],
   notify  => Service['jenkins'],
 }
 
@@ -141,7 +149,7 @@ exec { 'buildgraph-view_plugin':
   command => "wget http://dm/storage/jenkins/buildgraph-view.hpi",
   cwd     => "$szJenkinsPluginDir",
   path    => '/usr/bin',
-  require => Exec['jenkins'],
+  require => File["$szJenkinsPluginDir"],
   notify  => Service['jenkins'],
 }
 
@@ -151,7 +159,7 @@ exec { 'build-flow-plugin_plugin':
   command => "wget http://dm/storage/jenkins/build-flow-plugin.hpi",
   cwd     => "$szJenkinsPluginDir",
   path    => '/usr/bin',
-  require => Exec['jenkins'],
+  require => File["$szJenkinsPluginDir"],
   notify  => Service['jenkins'],
 }
 
@@ -161,7 +169,7 @@ exec { 'junit_plugin':
   command => "wget http://dm/storage/jenkins/junit.hpi",
   cwd     => "$szJenkinsPluginDir",
   path    => '/usr/bin',
-  require => Exec['jenkins'],
+  require => File["$szJenkinsPluginDir"],
   notify  => Service['jenkins'],
 }
 
@@ -171,7 +179,7 @@ exec { 'testng-plugin_plugin':
   command => "wget http://dm/storage/jenkins/testng-plugin.hpi",
   cwd     => "$szJenkinsPluginDir",
   path    => '/usr/bin',
-  require => Exec['jenkins'],
+  require => File["$szJenkinsPluginDir"],
   notify  => Service['jenkins'],
 }
 
@@ -181,7 +189,7 @@ exec { 'test-results-analyzer_plugin':
   command => "wget http://dm/storage/jenkins/test-results-analyzer.hpi",
   cwd     => "$szJenkinsPluginDir",
   path    => '/usr/bin',
-  require => Exec['jenkins'],
+  require => File["$szJenkinsPluginDir"],
   notify  => Service['jenkins'],
 }
 
@@ -191,7 +199,7 @@ exec { 'audit-trail_plugin':
   command => "wget http://dm/storage/jenkins/audit-trail.hpi",
   cwd     => "$szJenkinsPluginDir",
   path    => '/usr/bin',
-  require => Exec['jenkins'],
+  require => File["$szJenkinsPluginDir"],
   notify  => Service['jenkins'],
 }
 
