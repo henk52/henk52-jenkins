@@ -1,9 +1,9 @@
 # henk52-jenkins
-Jenkins master and slave installation.
+Jenkins dom and sub installation.
 
 RPM source: https://wiki.jenkins-ci.org/display/JENKINS/Installing+Jenkins+on+Red+Hat+distributions
 
-Create a master instance
+Create a dom instance
 puppet apply master_install.pp
 copy the public key to the slave_install.pp
 copy in all the .hpi plugins, either through wget from jenkins or from a repo.
